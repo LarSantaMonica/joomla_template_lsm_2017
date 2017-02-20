@@ -1,119 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install PUBLIC "-//Joomla! 2.5//DTD template 1.0//EN" "https://www.joomla.org/xml/dtd/1.6/template-install.dtd">
-<extension version="3.1" type="template" client="site">
-	<name>LSM_2017</name>
-	<creationDate>25 November 2009</creationDate>
-	<author>Angie Radtke</author>
-	<authorEmail>webmaster@larsantamonica.org.br</authorEmail>
-	<authorUrl>http://dev.larsantamonica.org.br</authorUrl>
-	<copyright>Copyright (C) 2017 Lar Santa Mônica. All rights reserved.</copyright>
-	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>0.0.1</version>
-	<description>TPL_LSM_2017_XML_DESCRIPTION</description>
+<!DOCTYPE install PUBLIC "-//Joomla! 2.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.6/template-install.dtd">
+<extension version="2.5" client="site" type="template" method="upgrade">
+    <name>dd_schoolsfun_48</name>
+    <creationDate>2014-10-27</creationDate>
+    <version>1.0</version>
+    <author>www.diablodesign.eu</author>
+    <authorUrl>http://www.diablodesign.eu</authorUrl>
+                     <description><![CDATA[	<h1>DD Schol's FUN 48 -  Free responsive joomla template</h1>
+			 <img src="../templates/dd_schoolsfun_48/template_thumbnail.png" align="left" hspace="10" style="padding-right:10px;"/>
+    <span style="font-size: 15px;font-weight:bold;">
+			Schol's FUN 48 template ,design by DiabloDesign.
+			<span style="color:red; font-weight: bold; ">!Not for commercial!!! for commercial use, you must pay a special license (10 EURO) .</span> <br />
+			    <span style="font-size: 15px;font-weight:bold;">
+			<br />Schol's FUN 48 template ,design by DiabloDesign.
+			<span style="color:green; font-weight: bold; ">!Szablonu nie można używać na stonach firmowych!!! Licencja dla stron firmowych kosztuje. (40PLN Brutto) .</span> <br />				
+			<br />Visit Diablodesign.eu: <a href="http://www.diablodesign.eu" target="_blank">http://www.diablodesign.eu</a>.Email: biuro@diablodesign.eu<br />
+			</span>	
+	
 
-	<files>
-		<folder>css</folder>
-		<folder>html</folder>
-		<folder>images</folder>
-		<folder>javascript</folder>
-		<folder>language</folder>
-		<filename>index.php</filename>
-		<filename>templateDetails.xml</filename>
-		<filename>template_preview.png</filename>
-		<filename>template_thumbnail.png</filename>
-		<filename>jsstrings.php</filename>
-		<filename>favicon.ico</filename>
-		<filename>component.php</filename>
-		<filename>error.php</filename>
-	</files>
+	<b>Free Joomla 2.5 i 3.2 Template developed by <a target="_blank" href="http://www.diablodesign.eu">www.diablodesign.eu</a>, released under the <a target="_blank" href="http://creativecommons.org/licenses/by/3.0/us/">Creative Commons Attribution 3.0</a>.
+	<br />Our free joomla templates may be used for both personal websites.<br />
+	<br />Copyright 2014 www.diablodesign.eu - All Rights Reserved </b>
+	<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+	<h1>POSITION MODULES</h1>
+	<img src="../templates/dd_schoolsfun_48/images/pozycje.jpg"/>
 
-	<positions>
-		<position>debug</position>
-		<position>position-0</position>
-		<position>position-1</position>
-		<position>position-2</position>
-		<position>position-3</position>
-		<position>position-4</position>
-		<position>position-5</position>
-		<position>position-6</position>
-		<position>position-7</position>
-		<position>position-8</position>
-		<position>position-9</position>
-		<position>position-10</position>
-		<position>position-11</position>
-		<position>position-12</position>
-		<position>position-13</position>
-		<position>position-14</position>
-	</positions>
-
-	<!-- 	For core templates, we also install/uninstall the language files in the core language folders.
-	-->
-	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.tpl_lsm_2017.ini</language>
-		<language tag="en-GB">en-GB/en-GB.tpl_lsm_2017.sys.ini</language>
-	</languages>
-
-	<config>
-		<fields name="params">
-			<fieldset name="advanced">
-				<field name="wrapperSmall"  class="validate-numeric" type="text" default="53"
-					label="TPL_LSM_2017_FIELD_WRAPPERSMALL_LABEL"
-					description="TPL_LSM_2017_FIELD_WRAPPERSMALL_DESC"
-					filter="integer" />
-
-				<field name="wrapperLarge"  class="validate-numeric" type="text" default="72"
-					label="TPL_LSM_2017_FIELD_WRAPPERLARGE_LABEL"
-					description="TPL_LSM_2017_FIELD_WRAPPERLARGE_DESC"
-					filter="integer" />
-
-				<field name="logo" type="media"
-					label="TPL_LSM_2017_FIELD_LOGO_LABEL" description="TPL_LSM_2017_FIELD_LOGO_DESC" />
-
-				<field name="sitetitle"  type="text" default=""
-					label="TPL_LSM_2017_FIELD_SITETITLE_LABEL"
-					description="TPL_LSM_2017_FIELD_SITETITLE_DESC"
-					filter="string" />
-
-				<field name="sitedescription"  type="text" default=""
-					label="TPL_LSM_2017_FIELD_DESCRIPTION_LABEL"
-					description="TPL_LSM_2017_FIELD_DESCRIPTION_DESC"
-					filter="string" />
-
-				<field name="navposition" type="list" default="center"
-					label="TPL_LSM_2017_FIELD_NAVPOSITION_LABEL"
-					description="TPL_LSM_2017_FIELD_NAVPOSITION_DESC"
-					filter="word"
-				>
-					<option value="center">TPL_LSM_2017_OPTION_AFTER_CONTENT</option>
-					<option value="left">TPL_LSM_2017_OPTION_BEFORE_CONTENT</option>
-				</field>
-
-				<field name="bootstrap" type="textarea"
-					label="TPL_LSM_2017_FIELD_BOOTSTRAP_LABEL"
-					description="TPL_LSM_2017_FIELD_BOOTSTRAP_DESC"
-					rows="4" columns="30"
-				/>
-
-				<field name="templatecolor" type="list" default="nature"
-					label="TPL_LSM_2017_FIELD_TEMPLATECOLOR_LABEL"
-					description="TPL_LSM_2017_FIELD_TEMPLATECOLOR_DESC"
-					filter="word"
-				>
-					<option value="nature">TPL_LSM_2017_OPTION_NATURE</option>
-					<option value="personal">TPL_LSM_2017_OPTION_PERSONAL</option>
-					<option value="red">TPL_LSM_2017_OPTION_RED</option>
-					<option value="turq">TPL_LSM_2017_OPTION_TURQ</option>
-					<option value="image">TPL_LSM_2017_OPTION_IMAGE</option>
-				</field>
-
-				<field name="headerImage" type="media"
-					label="TPL_LSM_2017_FIELD_HEADER_IMAGE_LABEL" description="TPL_LSM_2017_FIELD_HEADER_IMAGE_DESC" />
-
-				<field name="backgroundcolor" type="color" default="#eee"
-					label="TPL_LSM_2017_FIELD_HEADER_BACKGROUND_COLOR_LABEL"
-					description="TPL_LSM_2017_FIELD_HEADER_BACKGROUND_COLOR_DESC" />
-
+	]]>
+	
+	
+	</description>
+    <files>
+        <folder>css</folder>
+        <folder>html</folder>
+        <folder>images</folder>
+        <folder>language</folder>
+        <folder>library</folder>
+        <folder>js</folder>
+        <file>component.php</file>
+        <file>favicon.ico</file>
+        <file>functions.php</file>
+        <file>index.html</file>
+        <file>index.php</file>
+        <file>jquery.js</file>
+        <file>modules.js</file>
+        <file>script.js</file>
+        <file>script.responsive.js</file>
+        <file>templateDetails.xml</file>
+        <file>template_thumbnail.png</file>
+    </files>
+    <positions>
+        <position>debug</position>
+        <position>position-1</position>
+        <position>position-2</position>
+        <position>position-3</position>
+        <position>position-4</position>
+        <position>position-5</position>
+        <position>position-6</position>
+        <position>position-7</position>
+        <position>position-8</position>
+        <position>position-9</position>
+        <position>position-10</position>
+        <position>position-11</position>
+        <position>position-12</position>
+        <position>position-15</position>
+        <position>position-16</position>
+        <position>position-17</position>
+        <position>position-18</position>
+        <position>position-19</position>
+        <position>position-20</position>
+        <position>position-21</position>
+        <position>position-22</position>
+        <position>position-23</position>
+        <position>position-24</position>
+        <position>position-25</position>
+        <position>position-26</position>
+        <position>position-27</position>
+        <position>position-28</position>
+        <position>position-29</position>
+        <position>position-30</position>
+    </positions>
+   <config>
+      <fields name="params">
+           
+			 <!--logo-->
+			 <fieldset name="logo" label="Configuration Logo / Konfiguracja logo"><field name="logo" type="media" label="Select image " description="Logo" default="templates/dd_schoolsfun_48/images/logo.png"/>
+				</fieldset>
+	
+			<!--headter info-->
+						
+						<fieldset name="header_info" label="Header info / informacja w nagłówku">       
+                       <field name="title" type="text" default="Title Header" size="50" label="title" description="title"/>
+					   <field name="text" type="text" default="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pharetra, tellus sit amet congue vulputate, nisi erat iaculis nibh, vitae feugiat sapien ante eget mauris.&nbsp;Aenean sollicitudin imperdiet arcu, vitae dignissim est posuere id.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pharetra, tellus sit amet congue vulputate, nisi erat iaculis nibh, vitae feugiat sapien ante eget mauris.&nbsp;Aenean sollicitudin imperdiet arcu, vitae dignissim est posuere id." size="50" label="text" description="text"/>
+</fieldset>
+	<!--social-->
+			<fieldset name="social" label="Links to social networking sites / Ikony społecznościowe">	
+			<field name="facebook" type="text" default="https://facebook.com" label="Facebok url:" description="facebok link" filter="string" />
+            <field name="twitter" type="text" default="https://twitter.com" label="Twitter url:" description="twitter link" filter="string" />
+		
 			</fieldset>
-		</fields>
-	</config>
+				<!--scrool-->
+                   <fieldset name="scroll" label="Back To Top / Powrót na góre">
+                      
+						<field name="backc" type="list" default="1" label="" description="test">
+					<option value="0">Disabled / WYLACZ</option>
+					<option value="1">Enabled / ZALACZ</option>
+				</field>
+						</fieldset>
+						<!--footer-->
+						<fieldset name="footer" label="Footer / Konfiguracja stopki">       
+                       <field name="footer" type="text" default="School's Fun" size="50" label="Site name" description="footer site name"/>
+</fieldset>
+
+<!--Licence number-->
+						<fieldset name="license" label="License key / klucz licencji ">
+							<field type="spacer" class="text" label="&lt;b style='color:green;'&gt;Klucz licencji dostarczany jest z Fakturą VAT   !&lt;/b&gt;&lt;/a&gt;" />       
+                       <field name="license" type="text" default="License Number" size="50" label="License Number" description="License Number"/>
+					   <field type="spacer" class="text" label="&lt;b style='color:red;'&gt;Important: if you download this template for commercial use take and pay a special license (10 euros) on the homepage.   !&lt;/b&gt;&lt;/a&gt;" />
+</fieldset>
+        </fields>
+    </config>
+ 
 </extension>

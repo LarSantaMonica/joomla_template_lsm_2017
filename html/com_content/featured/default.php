@@ -1,89 +1,74 @@
 <?php
-/**
- * @package     Joomla.Site
- * @subpackage  Templates.beez3
- *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
- */
-
 defined('_JEXEC') or die;
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
+
+require_once dirname(dirname(dirname(dirname(__FILE__)))) . DIRECTORY_SEPARATOR . 'functions.php';
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers'); 
+
+
+if ('artisteer' == JFactory::getApplication()->getTemplate(true)->params->get('blogLayoutType')) {
+    require 'art_blog.php';
+    return;
+}
+
 
 JHtml::_('behavior.caption');
 
-?>
+Artx::load("Artx_Content");
 
-<section class="blog-featured<?php echo $this->pageclass_sfx;?>">
-<?php if ( $this->params->get('show_page_heading') != 0) : ?>
-	<h1>
-	<?php echo $this->escape($this->params->get('page_heading')); ?>
-	</h1>
-<?php endif; ?>
-<?php $leadingcount = 0; ?>
-<?php if (!empty($this->lead_items)) : ?>
-<div class="items-leading">
-	<?php foreach ($this->lead_items as &$item) : ?>
-		<article class="leading-<?php echo $leadingcount; ?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
-			<?php
-				$this->item = &$item;
-				echo $this->loadTemplate('item');
-			?>
-		</article>
-		<?php
-			$leadingcount++;
-		?>
-	<?php endforeach; ?>
-</div>
-<?php endif; ?>
-<?php
-	$introcount = count($this->intro_items);
-	$counter = 0;
-?>
-<?php if (!empty($this->intro_items)) : ?>
-	<?php foreach ($this->intro_items as $key => &$item) : ?>
+$view = new ArtxContent($this, $this->params);
 
-	<?php
-		$key = ($key - $leadingcount) + 1;
-		$rowcount = (((int) $key - 1) % (int) $this->columns) + 1;
-		$row = $counter / $this->columns;
+echo $view->beginPageContainer('blog-featured', array('itemscope' => null, 'itemtype' => 'http://schema.org/Blog'));
+if (strlen($view->pageHeading))
+    echo $view->pageHeading();
 
-		if ($rowcount == 1) : ?>
+$leadingcount = 0;
+if (!empty($this->lead_items)) {
+    echo '<div class="items-leading">';
+    foreach ($this->lead_items as $item) {
+        echo '<div class="leading-' . $leadingcount . ($item->state == 0 ? ' system-unpublished' : '') . '" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">';
+        $this->item = $item;
+        echo $this->loadTemplate('item');
+        echo '</div>';
+        $leadingcount++;
+    }
+    echo '</div>';
+}
 
-			<div class="items-row cols-<?php echo (int) $this->columns;?> <?php echo 'row-'.$row; ?>">
-		<?php endif; ?>
-		<article class="item column-<?php echo $rowcount;?><?php echo $item->state == 0 ? ' system-unpublished"' : null; ?>">
-			<?php
-					$this->item = &$item;
-					echo $this->loadTemplate('item');
-			?>
-		</article>
-		<?php $counter++; ?>
-			<?php if (($rowcount == $this->columns) or ($counter == $introcount)) : ?>
-				<span class="row-separator"></span>
-				</div>
+$introcount = count($this->intro_items);
+$counter = 0;
+if (!empty($this->intro_items)) {
+    foreach ($this->intro_items as $key => $item) {
+        $key = ($key - $leadingcount) + 1;
+        $rowcount = (((int)$key - 1) % (int)$this->columns) + 1;
+        $row = $counter / $this->columns;
+        if ($rowcount == 1)
+            echo '<div class="items-row cols-' . (int) $this->columns . ' row-' . $row . '">';
+        echo '<div class="item column-' . $rowcount . ($item->state == 0 ? ' system-unpublished"' : '') . '" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">';
+        $this->item = $item;
+        echo $this->loadTemplate('item');
+        echo '</div>';
+        $counter++;
+        if ($rowcount == $this->columns || $counter == $introcount)
+            echo '<span class="row-separator"></span></div>';
+    }
+}
 
-			<?php endif; ?>
-	<?php endforeach; ?>
-<?php endif; ?>
+if (!empty($this->link_items)) {
+    ob_start();
+    echo '<div class="items-more">' . $this->loadTemplate('links') . '</div>';
+    echo artxPost(ob_get_clean());
+}
 
-<?php if (!empty($this->link_items)) : ?>
-	<div class="items-more">
-	<?php echo $this->loadTemplate('links'); ?>
-	</div>
-<?php endif; ?>
-
-<?php if ($this->params->def('show_pagination', 2) == 1  || ($this->params->get('show_pagination') == 2 && $this->pagination->pagesTotal > 1)) : ?>
-	<div class="pagination">
-
-		<?php if ($this->params->def('show_pagination_results', 1)) : ?>
-			<p class="counter">
-				<?php echo $this->pagination->getPagesCounter(); ?>
-			</p>
-		<?php  endif; ?>
-				<?php echo $this->pagination->getPagesLinks(); ?>
-	</div>
-<?php endif; ?>
-</section>
-
-
+if ($this->params->def('show_pagination', 2) == 1
+    || ($this->params->get('show_pagination') == 2
+        && $this->pagination->get('pages.total') > 1))
+{
+    ob_start();
+    echo '<div class="pagination">';
+    if ($this->params->def('show_pagination_results', 1))
+        echo '<p class="counter">' . $this->pagination->getPagesCounter() . '</p>';
+    echo $this->pagination->getPagesLinks();
+    echo '</div>';
+    echo ob_get_clean();
+}
+echo $view->endPageContainer();

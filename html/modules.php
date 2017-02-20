@@ -1,117 +1,96 @@
 <?php
-/**
- * @package     Joomla.Site
- * @subpackage  Templates.beez3
- *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
- */
-
 defined('_JEXEC') or die;
 
-/**
- * beezDivision chrome.
- *
- * @since   3.0
- */
-function modChrome_beezDivision($module, &$params, &$attribs)
+if (!defined('_ARTX_FUNCTIONS'))
+  require_once dirname(__FILE__) . str_replace('/', DIRECTORY_SEPARATOR, '/../functions.php');
+
+function modChrome_artstyle($module, &$params, &$attribs)
 {
-	$headerLevel = isset($attribs['headerLevel']) ? (int) $attribs['headerLevel'] : 3;
-	if (!empty ($module->content)) : ?>
-		<div class="moduletable<?php echo htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8'); ?>">
-		<?php if ($module->showtitle) : ?>
-			<h<?php echo $headerLevel; ?>><?php echo $module->title; ?></h<?php echo $headerLevel; ?>>
-		<?php endif; ?>
-		<?php echo $module->content; ?></div>
-	<?php endif;
+  $style = isset($attribs['artstyle']) ? $attribs['artstyle'] : 'dd-nostyle';
+  $styles = array(
+    'dd-nostyle' => 'modChrome_artnostyle',
+    'dd-block' => 'modChrome_artblock',
+    'dd-article' => 'modChrome_artarticle',
+    'dd-vmenu' => 'modChrome_artvmenu'
+  );
+  // moduleclass_sfx support:
+  //  '' or 'suffix'   - the default module style: custom suffix will not be added to the module tag
+  //                     but will be added to the module elements.
+  //  ' suffix'        - adds suffix to the module as well as to the module elements.
+  //  'dd-...'        - overwrites the default module style.
+  //  'suffix dd-...' - overwrites the default style and adds suffix to the module and
+  //                     to its elements, does not add dd-... to the module elements.
+  
+  $classes = explode(' ', rtrim($params->get('moduleclass_sfx')));
+  $keys = array_keys($styles);
+  $art = array();
+  foreach ($classes as $key => $class) {
+    if (in_array($class, $keys)) {
+      $art[] = $class;
+      $classes[$key] = ' ';
+    }
+  }
+  $classes = str_replace('  ', ' ', rtrim(implode(' ', $classes)));
+  $style = count($art) ? array_pop($art) : $style;
+  $params->set('moduleclass_sfx', $classes);
+  
+  $module->content = preg_replace_callback('/<script[^>]*>([\s\S]+?)<\/script>/', 'parseInlineModuleScripts', $module->content);
+  
+  call_user_func($styles[$style], $module, $params, $attribs);
 }
 
-/**
- * beezHide chrome.
- *
- * @since   3.0
- */
-function modChrome_beezHide($module, &$params, &$attribs)
+function parseInlineModuleScripts($matches) {
+    if (strpos($matches[1], '/*Artisteer scripts*/')) {
+        $modulesJs = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'modules.js';
+        $content = file_get_contents($modulesJs);
+        file_put_contents($modulesJs, $content . $matches[1]);
+        return "";
+    } else {
+        return $matches[0];
+    }
+}
+
+function modChrome_artnostyle($module, &$params, &$attribs)
 {
-	$headerLevel = isset($attribs['headerLevel']) ? (int) $attribs['headerLevel'] : 3;
-	$state = isset($attribs['state']) ? (int) $attribs['state'] :0;
-
-	if (!empty ($module->content)) { ?>
-
-<div
-	class="moduletable_js <?php echo htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');?>"><?php if ($module->showtitle) : ?>
-<h<?php echo $headerLevel; ?> class="js_heading"> <?php echo $module->title; ?> <a href="#"
-	title="<?php echo JText::_('TPL_BEEZ3_CLICK'); ?>"
-	onclick="auf('module_<?php echo $module->id; ?>'); return false"
-	class="opencloselink" id="link_<?php echo $module->id?>"> <span
-	class="no"><img src="templates/beez3/images/plus.png"
-	alt="<?php if ($state == 1) { echo JText::_('TPL_BEEZ3_ALTOPEN');} else {echo JText::_('TPL_BEEZ3_ALTCLOSE');} ?>" />
-</span></a></h<?php echo $headerLevel; ?>> <?php endif; ?>
-<div class="module_content <?php if ($state == 1){echo 'open';} ?>"
-	id="module_<?php echo $module->id; ?>" tabindex="-1"><?php echo $module->content; ?></div>
+if (!empty ($module->content)) : ?>
+<!-- begin nostyle -->
+<div class="dd-nostyle<?php echo $params->get('moduleclass_sfx'); ?>">
+<?php if ($module->showtitle != 0) : ?>
+<h3><?php echo $module->title; ?></h3>
+<?php endif; ?>
+<!-- begin nostyle content -->
+<?php echo $module->content; ?>
+<!-- end nostyle content -->
 </div>
-	<?php }
+<!-- end nostyle -->
+<?php endif;
 }
 
-/**
- * beezTabs chrome.
- *
- * @since   3.0
- */
-function modChrome_beezTabs($module, $params, $attribs)
+function modChrome_artblock($module, &$params, &$attribs)
 {
-	$area = isset($attribs['id']) ? (int) $attribs['id'] :'1';
-	$area = 'area-'.$area;
+  if (!empty ($module->content))
+    echo artxBlock(($module->showtitle != 0) ? $module->title : '', artxBalanceTags($module->content),
+      $params->get('moduleclass_sfx'));
+}
 
-	static $modulecount;
-	static $modules;
+function modChrome_artvmenu($module, &$params, &$attribs)
+{
+  if (!empty ($module->content)) {
+    if (function_exists('artxVMenuBlock'))
+      echo artxVMenuBlock(($module->showtitle != 0) ? $module->title : '', $module->content,
+        $params->get('moduleclass_sfx'));
+    else
+      echo artxBlock(($module->showtitle != 0) ? $module->title : '', $module->content,
+        $params->get('moduleclass_sfx'));
+  }
+}
 
-	if ($modulecount < 1)
-	{
-		$modulecount = count(JModuleHelper::getModules($module->position));
-		$modules = array();
-	}
-
-	if ($modulecount == 1)
-	{
-		$temp = new stdClass;
-		$temp->content = $module->content;
-		$temp->title = $module->title;
-		$temp->params = $module->params;
-		$temp->id = $module->id;
-		$modules[] = $temp;
-		// list of moduletitles
-		// list of moduletitles
-		echo '<div id="'. $area.'" class="tabouter"><ul class="tabs">';
-
-		foreach ($modules as $rendermodule)
-		{
-			echo '<li class="tab"><a href="#" id="link_'.$rendermodule->id.'" class="linkopen" onclick="tabshow(\'module_'. $rendermodule->id.'\');return false">'.$rendermodule->title.'</a></li>';
-		}
-		echo '</ul>';
-		$counter = 0;
-		// modulecontent
-		foreach ($modules as $rendermodule)
-		{
-			$counter ++;
-
-			echo '<div tabindex="-1" class="tabcontent tabopen" id="module_'.$rendermodule->id.'">';
-			echo $rendermodule->content;
-			if ($counter != count($modules))
-			{
-			echo '<a href="#" class="unseen" onclick="nexttab(\'module_'. $rendermodule->id.'\');return false;" id="next_'.$rendermodule->id.'">'.JText::_('TPL_BEEZ3_NEXTTAB').'</a>';
-			}
-			echo '</div>';
-		}
-		$modulecount--;
-		echo '</div>';
-	} else {
-		$temp = new stdClass;
-		$temp->content = $module->content;
-		$temp->params = $module->params;
-		$temp->title = $module->title;
-		$temp->id = $module->id;
-		$modules[] = $temp;
-		$modulecount--;
-	}
+function modChrome_artarticle($module, &$params, &$attribs)
+{
+  if (!empty ($module->content)) {
+    $data = array('classes' => $params->get('moduleclass_sfx'), 'content' => $module->content);
+    if ($module->showtitle != 0)
+      $data['header-text'] = $module->title;
+    echo artxPost($data);
+  }
 }
